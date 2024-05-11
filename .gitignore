@@ -1,2 +1,23 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
 .idea
-.DS_Storeit
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+/mcmodsrepo/
