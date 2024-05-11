@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.bawnorton.searchableworkbench.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "searchableworkbench.refmap.json",
+  "mixins": [
+    "AbstractContainerScreenMixin"
+  ],
+  "client": [
+    "WorkbenchScreen$TabAccessor",
+    "WorkbenchScreenMixin"
+  ],
+  "minVersion": "0.8.5"
+}
