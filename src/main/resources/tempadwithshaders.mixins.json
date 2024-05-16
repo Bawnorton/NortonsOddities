@@ -1,9 +1,11 @@
 {
   "required": true,
-  "package": "${project.group}.mixin",
+  "package": "com.bawnorton.tempadwithshaders.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "${mod_id}.refmap.json",
   "mixins": [],
-  "client": [],
+  "client": [
+    "TimedoorRendererMixin"
+  ],
   "minVersion": "0.8.5"
 }
