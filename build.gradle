@@ -209,10 +209,11 @@ dependencies {
         jarJar.ranged(it, "[0.3.6,)")
     }
 
-    implementation fg.deobf("curse.maven:tempad-514923:4586186")
-    implementation fg.deobf("curse.maven:oculus-581495:4763262")
-    runtimeOnly fg.deobf("curse.maven:rubidium-574856:4763255")
-
+    implementation fg.deobf("curse.maven:tempad-514923:5008918")
+    implementation fg.deobf("curse.maven:oculus-581495:5299671")
+    runtimeOnly fg.deobf("curse.maven:embeddium-908741:5352230")
+    runtimeOnly fg.deobf("curse.maven:resourceful-lib-570073:5361260")
+    runtimeOnly fg.deobf("curse.maven:resourceful-config-714059:5020441")
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
