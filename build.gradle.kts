@@ -56,6 +56,9 @@ tasks {
 
     processResources {
         val modMetadata = mapOf(
+            "mod_id" to mod.id,
+            "mod_name" to mod.name,
+            "version" to mod.version,
             "description" to mod.description,
             "version" to mod.version,
             "minecraft_dependency" to mod.minecraftDependency,
@@ -92,19 +95,20 @@ tasks.register<Copy>("buildAndCollect") {
 
 loader.forge {
     dependencies {
-        mappings(loom.layered {
-            mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
-        })
+        mappings(loom.officialMojangMappings())
         forge("net.minecraftforge:forge:$minecraftVersion-${loader.getVersion()}")
-        "io.github.llamalad7:mixinextras-forge:0.4.1".let { implementation(it); include(it) }
-        "io.github.llamalad7:mixinextras-common:0.4.1".let { compileOnly(it); annotationProcessor(it) }
+        compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1")!!)
+        implementation(include("io.github.llamalad7:mixinextras-forge:0.4.1")!!)
 
         modImplementation("curse.maven:tetra-289712:4941337")
         modImplementation("curse.maven:apotheosis-313970:5180227")
+
+        modImplementation("curse.maven:mutil-351914:4941248")
+        modImplementation("curse.maven:placebo-283644:5180198")
     }
 
     loom {
-        forge.mixinConfigs("tetra-apotheosis-fix.mixins.json")
+        forge.mixinConfigs("tetra_apotheosis_fix.mixins.json")
     }
 }
 
