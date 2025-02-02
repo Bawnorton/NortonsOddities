@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "com.bawnorton.taf.mixin",
+  "minVersion": "0.8",
+  "mixins": [
+    "AttributeEventsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
