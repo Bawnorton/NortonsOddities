@@ -3,7 +3,8 @@ import org.gradle.configurationcache.extensions.capitalized
 plugins {
     id("dev.kikugie.stonecutter")
 }
-stonecutter active "1.21-neoforge" /* [SC] DO NOT EDIT */
+
+stonecutter active "1.19.2-forge" /* [SC] DO NOT EDIT */
 
 fun chiseledTask(task : String, group : String) {
     val name = "chiseled${task.capitalized()}"
@@ -29,6 +30,6 @@ chiseledTask("publishMavenPublicationToBawnortonRepository", "publishing")
 
 stonecutter configureEach {
     val current = project.property("loom.platform")
-    val platforms = listOf("fabric", "neoforge").map { it to (it == current) }
+    val platforms = listOf("fabric", "neoforge", "forge").map { it to (it == current) }
     consts(platforms)
 }

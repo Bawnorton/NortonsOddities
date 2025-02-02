@@ -1,5 +1,3 @@
-import dev.kikugie.stonecutter.StonecutterSettings
-
 pluginManagement {
 	repositories {
 		maven("https://maven.fabricmc.net/")
@@ -13,7 +11,7 @@ pluginManagement {
 }
 
 plugins {
-	id("dev.kikugie.stonecutter") version "0.4"
+	id("dev.kikugie.stonecutter") version "0.5.1"
 }
 
 fun getProperty(key: String): String? {
@@ -25,8 +23,7 @@ fun getVersions(key: String): Set<String> {
 }
 
 val versions = mapOf(
-	"fabric" to getVersions("fabric_versions"),
-	"neoforge" to getVersions("neoforge_versions")
+	"forge" to getVersions("forge_versions"),
 )
 
 val sharedVersions = versions.map { entry ->
@@ -34,15 +31,13 @@ val sharedVersions = versions.map { entry ->
 	entry.value.map { "$it-$loader" }
 }.flatten().toSet()
 
-extensions.configure<StonecutterSettings> {
+stonecutter {
 	kotlinController = true
 	centralScript = "build.gradle.kts"
 
-	shared {
+	create(rootProject) {
 		versions(sharedVersions)
 	}
-
-	create(rootProject)
 }
 
 rootProject.name = getProperty("mod_name")!!

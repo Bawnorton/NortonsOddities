@@ -3,7 +3,7 @@
 plugins {
     `maven-publish`
     java
-    kotlin("jvm") version "1.9.22"
+    kotlin("jvm") version "2.1.0"
     id("dev.architectury.loom") version "1.7-SNAPSHOT"
     id("architectury-plugin") version "3.4-SNAPSHOT"
     id("me.modmuss50.mod-publish-plugin") version "0.5.+"
@@ -11,8 +11,7 @@ plugins {
 
 val mod = ModData(project)
 val loader = LoaderData(project, loom.platform.get().name.lowercase())
-val minecraftVersion = MinecraftVersionData(stonecutter)
-val awName = "${mod.id}.accesswidener"
+val minecraftVersion = stonecutter.current.version.substringBeforeLast("-")
 
 version = "${mod.version}-$loader+$minecraftVersion"
 group = mod.group
@@ -24,6 +23,7 @@ repositories {
     maven("https://maven.bawnorton.com/releases/")
     maven("https://maven.shedaniel.me")
     maven("https://jitpack.io")
+    maven("https://cursemaven.com")
 }
 
 dependencies {
@@ -31,8 +31,6 @@ dependencies {
 }
 
 loom {
-    accessWidenerPath.set(rootProject.file("src/main/resources/$awName"))
-
     runConfigs.all {
         ideConfigGenerated(true)
         runDir = "../../run"
@@ -40,23 +38,6 @@ loom {
 
     runConfigs["client"].apply {
         programArgs("--username=Bawnorton", "--uuid=17c06cab-bf05-4ade-a8d6-ed14aaf70545")
-    }
-
-    runs {
-        afterEvaluate {
-            val mixinJarFile = configurations.runtimeClasspath.get().incoming.artifactView {
-                componentFilter {
-                    it is ModuleComponentIdentifier && it.group == "net.fabricmc" && it.module == "sponge-mixin"
-                }
-            }.files.first()
-
-            configureEach {
-                vmArg("-javaagent:$mixinJarFile")
-
-                property("mixin.hotSwap", "true")
-                property("mixin.debug.export", "true")
-            }
-        }
     }
 
     sourceSets {
@@ -70,7 +51,7 @@ loom {
 
 tasks {
     withType<JavaCompile> {
-        options.release = 21
+        options.release = 17
     }
 
     processResources {
@@ -78,17 +59,12 @@ tasks {
             "description" to mod.description,
             "version" to mod.version,
             "minecraft_dependency" to mod.minecraftDependency,
-            "minecraft_version" to minecraftVersion.toString(),
+            "minecraft_version" to minecraftVersion,
             "loader_version" to loader.getVersion()
         )
 
         inputs.properties(modMetadata)
-        filesMatching("fabric.mod.json") { expand(modMetadata) }
-        filesMatching("META-INF/neoforge.mods.toml") { expand(modMetadata) }
-    }
-
-    jar {
-        dependsOn("copyDatagen")
+        filesMatching("META-INF/mods.toml") { expand(modMetadata) }
     }
 
     withType<AbstractCopyTask> {
@@ -103,8 +79,8 @@ tasks {
 java {
     withSourcesJar()
 
-    sourceCompatibility = JavaVersion.toVersion(minecraftVersion.javaVersion())
-    targetCompatibility = JavaVersion.toVersion(minecraftVersion.javaVersion())
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 tasks.register<Copy>("buildAndCollect") {
@@ -114,45 +90,21 @@ tasks.register<Copy>("buildAndCollect") {
     dependsOn("build")
 }
 
-loader.fabric {
-    dependencies {
-        mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
-        modImplementation("net.fabricmc:fabric-loader:${loader.getVersion()}")
-    }
-
-    fabricApi {
-        configureDataGeneration {
-            modId = mod.id
-        }
-    }
-
-    tasks {
-        register<Copy>("copyDatagen") {
-            from("src/main/generated")
-            into("${layout.buildDirectory.get()}/resources/main")
-            dependsOn("runDatagen")
-        }
-    }
-}
-
-loader.neoforge {
+loader.forge {
     dependencies {
         mappings(loom.layered {
             mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
-            mappings("dev.architectury:yarn-mappings-patch-neoforge:1.21+build.4")
         })
-        neoForge("net.neoforged:neoforge:${loader.getVersion()}")
+        forge("net.minecraftforge:forge:$minecraftVersion-${loader.getVersion()}")
+        "io.github.llamalad7:mixinextras-forge:0.4.1".let { implementation(it); include(it) }
+        "io.github.llamalad7:mixinextras-common:0.4.1".let { compileOnly(it); annotationProcessor(it) }
+
+        modImplementation("curse.maven:tetra-289712:4941337")
+        modImplementation("curse.maven:apotheosis-313970:5180227")
     }
 
-    tasks {
-        remapJar {
-            atAccessWideners.add("$minecraftVersion.accesswidener")
-        }
-
-        register<Copy>("copyDatagen") {
-            from(rootProject.file("versions/${minecraftVersion}-fabric/src/main/generated"))
-            into("${layout.buildDirectory.get()}/resources/main")
-        }
+    loom {
+        forge.mixinConfigs("tetra-apotheosis-fix.mixins.json")
     }
 }
 

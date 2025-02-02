@@ -1,5 +1,6 @@
 plugins {
     `kotlin-dsl`
+    kotlin("jvm") version "2.1.0"
 }
 
 repositories {
@@ -11,5 +12,5 @@ repositories {
 dependencies {
     implementation("net.fabricmc:fabric-loader:0.15.11")
     implementation("com.google.code.gson:gson:2.11.0")
-    implementation("dev.kikugie:stonecutter:0.4")
+    implementation("dev.kikugie:stonecutter:0.5.1")
 }
