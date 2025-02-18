@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.bawnorton.rldeasier.mixin",
+  "refmap": "mixins.rldeasier.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "srparasites.EntityBiomassMixin",
+    "srparasites.SRPEventHandlerBusMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
