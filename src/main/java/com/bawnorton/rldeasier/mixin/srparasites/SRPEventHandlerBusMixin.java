@@ -52,7 +52,10 @@ public abstract class SRPEventHandlerBusMixin {
             remap = false
     )
     private boolean alwaysDropLivingMaterials(boolean original, LivingDropsEvent event) {
-        if(original) return true;
+        if(original) {
+            WILL_DROP.set(true);
+            return true;
+        }
         if(!event.getEntityLiving().getTags().contains("spawnedFromBeckon")) return false;
 
         Item item = Item.getByNameOrId(DROPPING.get()[0]);
@@ -73,5 +76,20 @@ public abstract class SRPEventHandlerBusMixin {
     )
     private int alwaysDropLivingMaterials(int original, LivingDropsEvent event) {
         return WILL_DROP.get() ? 100 : original;
+    }
+
+    @ModifyExpressionValue(
+            method = "loot",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Ljava/lang/Integer;parseInt(Ljava/lang/String;)I",
+                    ordinal = 0
+            ),
+            remap = false
+    )
+    private int dropMoreMaterials(int original, LivingDropsEvent event) {
+        Item item = Item.getByNameOrId(DROPPING.get()[0]);
+        if(WILL_DROP.get() && item != null && item.equals(SRPItems.ashyco_drop)) return (original + 1) * 2;
+        return original;
     }
 }
