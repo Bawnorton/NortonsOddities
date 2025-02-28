@@ -5,11 +5,13 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import team.tnt.collectorsalbum.common.Album;
 import team.tnt.collectorsalbum.common.AlbumCategory;
 import team.tnt.collectorsalbum.common.card.AlbumCard;
 import team.tnt.collectorsalbum.common.init.RegistryTags;
+import team.tnt.collectorsalbum.common.menu.AlbumCategoryMenu;
 import team.tnt.collectorsalbum.common.resource.AlbumCardManager;
 import team.tnt.collectorsalbum.common.resource.AlbumCategoryManager;
 import team.tnt.collectorsalbum.platform.network.NetworkMessage;
@@ -19,6 +21,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public class C2S_InsertCards implements NetworkMessage {
     public static final ResourceLocation IDENTIFIER = new ResourceLocation("tcgadditions", "msg_insert_cards");
@@ -52,11 +55,17 @@ public class C2S_InsertCards implements NetworkMessage {
 
         Map<ResourceLocation, List<Integer>> slotsToHighlight = new HashMap<>();
 
+        Map<Integer, Predicate<Integer>> emptySlotMap = player.containerMenu.slots
+                .stream()
+                .filter(slot -> TCGAdditions.CARD_SLOT_CLASS.isInstance(slot))
+                .collect(HashMap::new, (map, slot) -> map.put(slot.index, index -> !slot.hasItem()), Map::putAll);
+
         try {
             Album.Mutable mutable = new Album.Mutable(album);
             for (ResourceLocation category : categories) {
                 // replace with better cards
                 Collection<AlbumCard> cards = album.getCardsForCategory(category);
+                cards.removeIf(card -> emptySlotMap.get(card.cardNumber() - 1).test(card.cardNumber() - 1));
                 for (AlbumCard albumCard : cards) {
                     List<AlbumCard> toRemove = new ArrayList<>();
                     for (Map.Entry<AlbumCard, ItemStack> entry : inventoryCards.entrySet()) {

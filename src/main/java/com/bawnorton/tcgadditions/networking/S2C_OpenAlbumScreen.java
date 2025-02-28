@@ -2,14 +2,14 @@ package com.bawnorton.tcgadditions.networking;
 
 import com.bawnorton.tcgadditions.TCGAdditions;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import team.tnt.collectorsalbum.client.screen.AlbumCategoryScreen;
+import team.tnt.collectorsalbum.client.screen.AlbumNavigationHelper;
 import team.tnt.collectorsalbum.common.Album;
 import team.tnt.collectorsalbum.common.init.RegistryTags;
-import team.tnt.collectorsalbum.platform.Platform;
 import team.tnt.collectorsalbum.platform.network.NetworkMessage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,12 +64,9 @@ public class S2C_OpenAlbumScreen implements NetworkMessage {
         Album album = Album.get(itemStack);
         if (album == null) return;
 
-        Platform.INSTANCE.openAlbumUi(itemStack);
         TCGAdditions.SLOTS_TO_HIGHLIGHT.set(slotsToHighlight);
-
-        Screen current = Minecraft.getInstance().screen;
-        if(current == null) return;
-
-        current.resize(Minecraft.getInstance(), current.width, current.height);
+        if(Minecraft.getInstance().screen instanceof AlbumCategoryScreen albumCategoryScreen) {
+            AlbumNavigationHelper.navigateCategory(albumCategoryScreen.getCategory());
+        }
     }
 }
