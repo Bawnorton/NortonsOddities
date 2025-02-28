@@ -2,10 +2,17 @@
   "required": true,
   "package": "com.bawnorton.tcgadditions.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "${mod_id}.refmap.json",
-  "mixins": [],
-  "client": [
-    "AlbumMainPageScreenMixin"
+  "refmap": "tcgadditions.refmap.json",
+  "mixins": [
+    "NetworkManagerMixin"
   ],
-  "minVersion": "0.8.5"
+  "client": [
+    "AlbumCategoryScreenMixin",
+    "AlbumMainPageScreenMixin",
+    "BookmarkWidgetMixin"
+  ],
+  "minVersion": "0.8.5",
+  "injectors": {
+    "defaultRequire": 1
+  }
 }
