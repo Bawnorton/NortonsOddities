@@ -209,7 +209,8 @@ dependencies {
         jarJar.ranged(it, "[0.3.6,)")
     }
 
-    implementation fg.deobf("curse.maven:tempad-514923:5008918")
+    implementation fg.deobf("curse.maven:configuration-444699:5840405")
+    implementation fg.deobf("curse.maven:collectors-album-659390:5847709")
     implementation fg.deobf("curse.maven:oculus-581495:5299671")
     runtimeOnly fg.deobf("curse.maven:embeddium-908741:5352230")
     runtimeOnly fg.deobf("curse.maven:resourceful-lib-570073:5361260")
