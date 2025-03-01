@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "tcgadditions.refmap.json",
   "mixins": [
+    "AlbumCategoryMenuMixin",
     "NetworkManagerMixin"
   ],
   "client": [
