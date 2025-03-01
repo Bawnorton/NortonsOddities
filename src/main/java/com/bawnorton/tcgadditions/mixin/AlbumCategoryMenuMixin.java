@@ -29,8 +29,10 @@ public abstract class AlbumCategoryMenuMixin extends AbstractContainerMenu {
     )
     private void preventDupeBug(Slot instance, @Local(argsOnly = true) Player player, @Local(name = "slotsCount") int slotsCount, @Cancellable CallbackInfoReturnable<ItemStack> cir) {
         ItemStack stack = instance.safeTake(1, 1, player);
-        if(!moveItemStackTo(stack, slotsCount, slotsCount + 36, true)) {
-            cir.setReturnValue(ItemStack.EMPTY);
+        boolean success = moveItemStackTo(stack, slotsCount, slotsCount + 36, true);
+        if (!success) {
+            stack = instance.safeInsert(stack);
         }
+        cir.setReturnValue(stack);
     }
 }
