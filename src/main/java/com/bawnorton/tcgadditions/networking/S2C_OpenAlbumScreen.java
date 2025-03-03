@@ -10,26 +10,18 @@ import team.tnt.collectorsalbum.client.screen.AlbumCategoryScreen;
 import team.tnt.collectorsalbum.client.screen.AlbumNavigationHelper;
 import team.tnt.collectorsalbum.common.Album;
 import team.tnt.collectorsalbum.common.init.RegistryTags;
-import team.tnt.collectorsalbum.platform.network.NetworkMessage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class S2C_OpenAlbumScreen implements NetworkMessage {
-    public static final ResourceLocation IDENTIFIER = new ResourceLocation("tcgadditions", "msg_open_album_screen");
+public class S2C_OpenAlbumScreen {
     private final Map<ResourceLocation, List<Integer>> slotsToHighlight;
 
     public S2C_OpenAlbumScreen(Map<ResourceLocation, List<Integer>> slotsToHighlight) {
         this.slotsToHighlight = slotsToHighlight;
     }
 
-    @Override
-    public ResourceLocation getPacketId() {
-        return IDENTIFIER;
-    }
-
-    @Override
     public void write(FriendlyByteBuf friendlyByteBuf) {
         friendlyByteBuf.writeInt(slotsToHighlight.size());
         for (Map.Entry<ResourceLocation, List<Integer>> entry : slotsToHighlight.entrySet()) {
@@ -56,7 +48,6 @@ public class S2C_OpenAlbumScreen implements NetworkMessage {
         return new S2C_OpenAlbumScreen(slotsToHighlight);
     }
 
-    @Override
     public void handle(Player player) {
         ItemStack itemStack = player.getMainHandItem();
         if (!itemStack.is(RegistryTags.Items.ALBUM)) return;

@@ -1,3 +1,5 @@
 {
-  "tcgadditions.insert": "Insert"
+  "tcgadditions.insert": "§bInsert",
+  "tcgadditions.insert.disabled": "§7Disabled",
+  "tcgadditions.not_server": "§cTCG Additions is not installed on the server!"
 }

@@ -1,7 +1,6 @@
 package com.bawnorton.tcgadditions.networking;
 
 import com.bawnorton.tcgadditions.TCGAdditions;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -13,28 +12,13 @@ import team.tnt.collectorsalbum.common.init.RegistryTags;
 import team.tnt.collectorsalbum.common.menu.AlbumCategoryMenu;
 import team.tnt.collectorsalbum.common.resource.AlbumCardManager;
 import team.tnt.collectorsalbum.common.resource.AlbumCategoryManager;
-import team.tnt.collectorsalbum.platform.network.NetworkMessage;
-import team.tnt.collectorsalbum.platform.network.PlatformNetworkManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class C2S_InsertCards implements NetworkMessage {
-    public static final ResourceLocation IDENTIFIER = new ResourceLocation("tcgadditions", "msg_insert_cards");
-
-    @Override
-    public ResourceLocation getPacketId() {
-        return IDENTIFIER;
-    }
-
-    @Override
-    public void write(FriendlyByteBuf friendlyByteBuf) {
-
-    }
-
-    @Override
+public class C2S_InsertCards {
     public void handle(Player player) {
         ItemStack itemStack = player.getMainHandItem();
         if (!itemStack.is(RegistryTags.Items.ALBUM)) return;
@@ -96,7 +80,7 @@ public class C2S_InsertCards implements NetworkMessage {
             Album.set(itemStack, updated);
             player.getInventory().setChanged();
 
-            PlatformNetworkManager.NETWORK.sendClientMessage((ServerPlayer) player, new S2C_OpenAlbumScreen(slotsToHighlight));
+            Networking.sendClientMessage((ServerPlayer) player, new S2C_OpenAlbumScreen(slotsToHighlight));
         } catch (RuntimeException e) {
             TCGAdditions.LOGGER.error("Failed to insert card into album", e);
         }
