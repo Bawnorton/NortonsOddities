@@ -5,6 +5,7 @@
   "refmap": "tcgadditions.refmap.json",
   "mixins": [
     "alexcaves.GalenaGauntletItemMixin",
+    "collectorsalbum.Album$MutableMixin",
     "collectorsalbum.AlbumCategoryMenuMixin",
     "collectorsalbum.NetworkManagerMixin"
   ],

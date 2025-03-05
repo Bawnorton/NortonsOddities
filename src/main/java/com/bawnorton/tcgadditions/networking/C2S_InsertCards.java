@@ -1,9 +1,12 @@
 package com.bawnorton.tcgadditions.networking;
 
 import com.bawnorton.tcgadditions.TCGAdditions;
+import com.bawnorton.tcgadditions.extend.Album$MutableExtension;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import team.tnt.collectorsalbum.common.Album;
 import team.tnt.collectorsalbum.common.AlbumCategory;
@@ -21,19 +24,26 @@ import java.util.Map;
 public class C2S_InsertCards {
     public void handle(Player player) {
         ItemStack itemStack = player.getMainHandItem();
-        if (!itemStack.is(RegistryTags.Items.ALBUM)) return;
+        if (!itemStack.is(RegistryTags.Items.ALBUM))
+            return;
 
         Album album = Album.get(itemStack);
-        if (album == null) return;
+        if (album == null)
+            return;
 
         AlbumCategoryManager manager = AlbumCategoryManager.getInstance();
         AlbumCardManager cardManager = AlbumCardManager.getInstance();
-        List<ResourceLocation> categories = manager.listCategories().stream().map(AlbumCategory::identifier).toList();
+        List<ResourceLocation> categories = manager.listCategories()
+                .stream()
+                .map(AlbumCategory::identifier)
+                .toList();
         Map<AlbumCard, ItemStack> inventoryCards = player.getInventory().items
                 .stream()
                 .filter(stack -> cardManager.isCard(stack.getItem()))
-                .collect(HashMap::new, (map, stack) -> map.put(cardManager.getCardInfo(stack.getItem()).orElseThrow(), stack), Map::putAll);
-        if(inventoryCards.isEmpty()) return;
+                .collect(HashMap::new, (map, stack) -> map.put(cardManager.getCardInfo(stack.getItem())
+                        .orElseThrow(), stack), Map::putAll);
+        if (inventoryCards.isEmpty())
+            return;
 
         Map<ResourceLocation, List<Integer>> slotsToHighlight = new HashMap<>();
 
@@ -44,41 +54,41 @@ public class C2S_InsertCards {
 
         try {
             Album.Mutable mutable = new Album.Mutable(album);
+            Album$MutableExtension mutableExtension = (Album$MutableExtension) (Object) mutable;
             for (ResourceLocation category : categories) {
-                // replace with better cards
                 Collection<AlbumCard> cards = album.getCardsForCategory(category);
-                if(player.containerMenu instanceof AlbumCategoryMenu albumCategoryMenu && albumCategoryMenu.getCategory().identifier().equals(category)) {
+                if (player.containerMenu instanceof AlbumCategoryMenu albumCategoryMenu && albumCategoryMenu.getCategory()
+                        .identifier()
+                        .equals(category)) {
                     cards.removeIf(card -> emptySlotMap.get(card.cardNumber() - 1));
                 }
-                for (AlbumCard albumCard : cards) {
-                    List<AlbumCard> toRemove = new ArrayList<>();
-                    for (Map.Entry<AlbumCard, ItemStack> entry : inventoryCards.entrySet()) {
-                        AlbumCard inventoryCard = entry.getKey();
-                        if (!inventoryCard.identifier().equals(albumCard.identifier())) continue;
 
-                        if (inventoryCard.compareTo(albumCard) > 0) {
-                            mutable.set(category, inventoryCard.cardNumber() - 1, inventoryCard.asItem());
-                            entry.getValue().shrink(1);
-                            slotsToHighlight.computeIfAbsent(category, k -> new ArrayList<>()).add(inventoryCard.cardNumber() - 1);
-                        }
-                        toRemove.add(inventoryCard);
-                    }
-                    toRemove.forEach(inventoryCards::remove);
-                }
-
-                // add new cards
                 for (Map.Entry<AlbumCard, ItemStack> entry : inventoryCards.entrySet()) {
                     AlbumCard inventoryCard = entry.getKey();
-                    if (inventoryCard.category().equals(category)) {
+                    if (!inventoryCard.category().equals(category)) continue;
+
+                    ItemStack stack = mutableExtension.tcgadditions$get(category, inventoryCard.cardNumber() - 1);
+                    if (stack.isEmpty()) {
                         mutable.set(category, inventoryCard.cardNumber() - 1, inventoryCard.asItem());
                         entry.getValue().shrink(1);
                         slotsToHighlight.computeIfAbsent(category, k -> new ArrayList<>()).add(inventoryCard.cardNumber() - 1);
+                    } else {
+                        AlbumCard existingCard = cardManager.getCardInfo(stack.getItem()).orElseThrow();
+                        if (existingCard.compareTo(inventoryCard) < 0) {
+                            mutable.set(category, inventoryCard.cardNumber() - 1, inventoryCard.asItem());
+                            entry.getValue().shrink(1);
+                            slotsToHighlight.computeIfAbsent(category, k -> new ArrayList<>()).add(inventoryCard.cardNumber() - 1);
+                            if (!player.addItem(stack)) {
+                                player.drop(stack, true, false);
+                            }
+                        }
                     }
                 }
             }
             Album updated = mutable.toImmutable();
             Album.set(itemStack, updated);
-            player.getInventory().setChanged();
+            player.getInventory()
+                    .setChanged();
 
             Networking.sendClientMessage((ServerPlayer) player, new S2C_OpenAlbumScreen(slotsToHighlight));
         } catch (RuntimeException e) {
