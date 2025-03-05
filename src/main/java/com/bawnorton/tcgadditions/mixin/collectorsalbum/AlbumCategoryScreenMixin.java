@@ -1,4 +1,4 @@
-package com.bawnorton.tcgadditions.mixin;
+package com.bawnorton.tcgadditions.mixin.collectorsalbum;
 
 import com.bawnorton.tcgadditions.TCGAdditions;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

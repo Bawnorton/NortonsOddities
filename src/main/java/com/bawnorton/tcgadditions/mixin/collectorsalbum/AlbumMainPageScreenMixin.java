@@ -1,4 +1,4 @@
-package com.bawnorton.tcgadditions.mixin;
+package com.bawnorton.tcgadditions.mixin.collectorsalbum;
 
 import com.bawnorton.tcgadditions.extend.BookmarkWidgetExtension;
 import com.bawnorton.tcgadditions.networking.C2S_InsertCards;

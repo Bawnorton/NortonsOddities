@@ -1,4 +1,4 @@
-package com.bawnorton.tcgadditions.mixin;
+package com.bawnorton.tcgadditions.mixin.collectorsalbum;
 
 import com.bawnorton.tcgadditions.networking.Networking;
 import org.spongepowered.asm.mixin.Mixin;
