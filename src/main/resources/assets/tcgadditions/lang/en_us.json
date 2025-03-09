@@ -2,7 +2,7 @@
   "tcgadditions.insert": "§bInsert",
   "tcgadditions.insert.disabled": "§7Disabled",
   "tcgadditions.not_server": "§cTCG Additions is not installed on the server!",
-  "tcgadditions.inserted.cards.none": "§bNo§f cards inserted.",
-  "tcgadditions.inserted.cards.single": "§b1§f card inserted.",
-  "tcgadditions.inserted.cards.multiple": "§b%s§f cards inserted."
+  "tcgadditions.inserted.cards.none": "§bNo §fcards inserted.",
+  "tcgadditions.inserted.cards.single": "§b1 §fcard inserted.",
+  "tcgadditions.inserted.cards.multiple": "%s cards inserted."
 }

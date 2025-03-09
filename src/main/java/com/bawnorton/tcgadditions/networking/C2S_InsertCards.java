@@ -2,6 +2,7 @@ package com.bawnorton.tcgadditions.networking;
 
 import com.bawnorton.tcgadditions.TCGAdditions;
 import com.bawnorton.tcgadditions.extend.Album$MutableExtension;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -53,6 +54,7 @@ public class C2S_InsertCards {
                 .filter(slot -> TCGAdditions.CARD_SLOT_CLASS.isInstance(slot))
                 .collect(HashMap::new, (map, slot) -> map.put(slot.index, !slot.hasItem()), Map::putAll);
 
+        int insertCount = 0;
         try {
             Album.Mutable mutable = new Album.Mutable(album);
             Album$MutableExtension mutableExtension = (Album$MutableExtension) (Object) mutable;
@@ -73,12 +75,14 @@ public class C2S_InsertCards {
                         mutable.set(category, inventoryCard.cardNumber() - 1, inventoryCard.asItem());
                         entry.getValue().shrink(1);
                         slotsToHighlight.computeIfAbsent(category, k -> new ArrayList<>()).add(inventoryCard.cardNumber() - 1);
+                        insertCount++;
                     } else {
                         AlbumCard existingCard = cardManager.getCardInfo(stack.getItem()).orElseThrow();
                         if (existingCard.compareTo(inventoryCard) < 0) {
                             mutable.set(category, inventoryCard.cardNumber() - 1, inventoryCard.asItem());
                             entry.getValue().shrink(1);
                             slotsToHighlight.computeIfAbsent(category, k -> new ArrayList<>()).add(inventoryCard.cardNumber() - 1);
+                            insertCount++;
                             if (!player.addItem(stack)) {
                                 player.drop(stack, true, false);
                             }
@@ -90,12 +94,12 @@ public class C2S_InsertCards {
             Album.set(itemStack, updated);
             player.getInventory().setChanged();
 
-            if(slotsToHighlight.isEmpty()) {
+            if(insertCount == 0) {
                 player.sendSystemMessage(Component.translatable("tcgadditions.inserted.cards.none"));
-            } else if (slotsToHighlight.size() == 1) {
+            } else if (insertCount == 1) {
                 player.sendSystemMessage(Component.translatable("tcgadditions.inserted.cards.single"));
             } else {
-                player.sendSystemMessage(Component.translatable("tcgadditions.inserted.cards.multiple", slotsToHighlight.size()));
+                player.sendSystemMessage(Component.translatable("tcgadditions.inserted.cards.multiple", Component.literal(String.valueOf(insertCount)).withStyle(style -> style.withColor(ChatFormatting.AQUA))));
             }
 
             Networking.sendClientMessage((ServerPlayer) player, new S2C_OpenAlbumScreen(slotsToHighlight));
