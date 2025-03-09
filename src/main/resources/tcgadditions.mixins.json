@@ -12,7 +12,10 @@
   "client": [
     "collectorsalbum.AlbumCategoryScreenMixin",
     "collectorsalbum.AlbumMainPageScreenMixin",
-    "collectorsalbum.BookmarkWidgetMixin"
+    "collectorsalbum.BookmarkWidgetMixin",
+    "collectorsalbum.CardPackOpeningScreenMixin",
+    "collectorsalbum.CardPackOpeningScreenMixin$CardWidgetMixin",
+    "collectorsalbum.CardPackOpeningScreenMixin$FxElementMixin"
   ],
   "minVersion": "0.8.5",
   "injectors": {

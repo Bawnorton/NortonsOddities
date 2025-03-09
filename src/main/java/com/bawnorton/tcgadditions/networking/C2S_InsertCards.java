@@ -2,6 +2,7 @@ package com.bawnorton.tcgadditions.networking;
 
 import com.bawnorton.tcgadditions.TCGAdditions;
 import com.bawnorton.tcgadditions.extend.Album$MutableExtension;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -87,8 +88,15 @@ public class C2S_InsertCards {
             }
             Album updated = mutable.toImmutable();
             Album.set(itemStack, updated);
-            player.getInventory()
-                    .setChanged();
+            player.getInventory().setChanged();
+
+            if(slotsToHighlight.isEmpty()) {
+                player.sendSystemMessage(Component.translatable("tcgadditions.inserted.cards.none"));
+            } else if (slotsToHighlight.size() == 1) {
+                player.sendSystemMessage(Component.translatable("tcgadditions.inserted.cards.single"));
+            } else {
+                player.sendSystemMessage(Component.translatable("tcgadditions.inserted.cards.multiple", slotsToHighlight.size()));
+            }
 
             Networking.sendClientMessage((ServerPlayer) player, new S2C_OpenAlbumScreen(slotsToHighlight));
         } catch (RuntimeException e) {
