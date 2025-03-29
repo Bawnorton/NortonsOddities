@@ -6,6 +6,7 @@
   "mixins": [
     "alexcaves.GalenaGauntletItemMixin",
     "collectorsalbum.Album$MutableMixin",
+    "collectorsalbum.AlbumBonusManagerMixin",
     "collectorsalbum.AlbumCategoryMenuMixin",
     "collectorsalbum.NetworkManagerMixin"
   ],
