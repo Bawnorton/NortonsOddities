@@ -57,7 +57,7 @@ public abstract class AlbumCategoryScreenMixin extends AbstractContainerScreen<A
                 Map<Integer, Long> categoryDelayMap = tcgadditions$DELAY_MAP.computeIfAbsent(category.identifier(), k -> new HashMap<>());
                 categoryDelayMap.computeIfAbsent(slot, k -> System.currentTimeMillis());
                 categoryDelayMap.computeIfPresent(slot, (k, v) -> {
-                    if (System.currentTimeMillis() - v > 700) {
+                    if (System.currentTimeMillis() - v > 10000) {
                         toHighlight.remove(k);
                         return null;
                     }

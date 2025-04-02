@@ -14,7 +14,7 @@ import team.tnt.collectorsalbum.client.screen.CardPackOpeningScreen;
 @Mixin(CardPackOpeningScreen.class)
 public abstract class CardPackOpeningScreenMixin {
     @Unique
-    private static final double tcgaditions$SCALE = 5;
+    private static final double tcgaditions$SCALE = 10;
 
     @ModifyExpressionValue(
             method = "init",
