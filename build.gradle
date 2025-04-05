@@ -231,6 +231,8 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:resourceful-lib-570073:5361260")
     runtimeOnly fg.deobf("curse.maven:resourceful-config-714059:5020441")
 
+    implementation fg.deobf("curse.maven:pneumaticcraft-repressurized-281849:6142963")
+
 //    runtimeOnly fg.deobf("dev.latvian.mods:kubejs-forge:${kubejs_version}")
 //
 //    runtimeOnly fg.deobf("dev.latvian.mods:rhino-forge:${rhino_version}")

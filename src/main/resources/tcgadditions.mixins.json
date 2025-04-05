@@ -16,7 +16,11 @@
     "collectorsalbum.BookmarkWidgetMixin",
     "collectorsalbum.CardPackOpeningScreenMixin",
     "collectorsalbum.CardPackOpeningScreenMixin$CardWidgetMixin",
-    "collectorsalbum.CardPackOpeningScreenMixin$FxElementMixin"
+    "collectorsalbum.CardPackOpeningScreenMixin$FxElementMixin",
+    "pnc.ClientEventHandlerAccessor",
+    "pnc.ClientEventHandlerMixin",
+    "pnc.EntityMixin",
+    "pnc.PlayerRendererMixin"
   ],
   "minVersion": "0.8.5",
   "injectors": {

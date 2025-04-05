@@ -15,13 +15,13 @@ import net.minecraftforge.network.event.EventNetworkChannel;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public final class Networking {
-    public static final EventNetworkChannel EXISTENCE_CHANNEL = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(TCGAdditions.MODID, "exists"))
+    public static final EventNetworkChannel EXISTENCE_CHANNEL = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(TCGAdditions.MOD_ID, "exists"))
             .networkProtocolVersion(() -> "yes")
             .clientAcceptedVersions(Predicates.alwaysTrue())
             .serverAcceptedVersions(Predicates.alwaysTrue())
             .eventNetworkChannel();
 
-    public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(TCGAdditions.MODID, "main"))
+    public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(TCGAdditions.MOD_ID, "main"))
             .networkProtocolVersion(() -> "1")
             .clientAcceptedVersions(Predicates.alwaysTrue())
             .serverAcceptedVersions(Predicates.alwaysTrue())

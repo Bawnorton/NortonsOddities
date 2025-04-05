@@ -8,13 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Mod(TCGAdditions.MODID)
+@Mod(TCGAdditions.MOD_ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TCGAdditions {
-    public static final String MODID = "tcgadditions";
+    public static final String MOD_ID = "tcgadditions";
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final ThreadLocal<Map<ResourceLocation, List<Integer>>> SLOTS_TO_HIGHLIGHT = ThreadLocal.withInitial(HashMap::new);
+    public static final ThreadLocal<Float> INPUT_Y_ROT = ThreadLocal.withInitial(() -> 0f);
 
     public static Class<?> CARD_SLOT_CLASS;
 
