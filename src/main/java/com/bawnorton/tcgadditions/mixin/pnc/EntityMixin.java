@@ -51,13 +51,22 @@ public abstract class EntityMixin {
             currentScreenRoll = Mth.wrapDegrees(currentScreenRoll);
             ClientEventHandlerAccessor.setCurrentScreenRoll(currentScreenRoll);
 
+            float rollRad = (float) Math.toRadians(currentScreenRoll);
+            float f = (float) pXRot * 0.15F;
+
+            float deltaXRot = f * Mth.cos(rollRad);
+            float deltaYRot = f * Mth.sin(rollRad);
+
+            this.setXRot(this.getXRot() + deltaXRot);
+            this.setXRot(Mth.wrapDegrees(this.getXRot()));
+            this.xRotO += deltaXRot;
+            this.xRotO = Mth.wrapDegrees(this.xRotO);
+
+            this.setYRot(this.getYRot() + deltaYRot);
+            this.setYRot(Mth.wrapDegrees(this.getYRot()));
+
             this.setYRot(this.getYRot() + Mth.clamp(currentScreenRoll, -45, 45) / 120);
 
-            float f = (float)pXRot * 0.15F;
-            this.setXRot(this.getXRot() + f);
-            this.setXRot(Mth.wrapDegrees(this.getXRot()));
-            this.xRotO += f;
-            this.xRotO = Mth.wrapDegrees(this.xRotO);
             if (this.vehicle != null) {
                 this.vehicle.onPassengerTurned(player);
             }
