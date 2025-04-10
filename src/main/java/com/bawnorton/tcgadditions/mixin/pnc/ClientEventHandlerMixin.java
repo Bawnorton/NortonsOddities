@@ -1,5 +1,6 @@
 package com.bawnorton.tcgadditions.mixin.pnc;
 
+import com.bawnorton.tcgadditions.TCGAdditions;
 import me.desht.pneumaticcraft.client.event.ClientEventHandler;
 import me.desht.pneumaticcraft.common.item.PneumaticArmorItem;
 import me.desht.pneumaticcraft.common.pneumatic_armor.JetBootsStateTracker;
@@ -28,6 +29,7 @@ public abstract class ClientEventHandlerMixin {
 
         JetBootsStateTracker.JetBootsState jbState = JetBootsStateTracker.getClientTracker().getJetBootsState(player);
         if (!jbState.isActive() || jbState.isBuilderMode()) return;
+        if(!TCGAdditions.isBecomePlane()) return;
 
         event.setRoll(currentScreenRoll);
 

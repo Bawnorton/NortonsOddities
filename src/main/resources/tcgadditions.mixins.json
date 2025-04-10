@@ -20,7 +20,9 @@
     "pnc.ClientEventHandlerAccessor",
     "pnc.ClientEventHandlerMixin",
     "pnc.EntityMixin",
-    "pnc.PlayerRendererMixin"
+    "pnc.PlayerRendererMixin",
+    "pnc.JetBootsClientHandlerMixin",
+    "pnc.JetBootsOptionsMixin"
   ],
   "minVersion": "0.8.5",
   "injectors": {

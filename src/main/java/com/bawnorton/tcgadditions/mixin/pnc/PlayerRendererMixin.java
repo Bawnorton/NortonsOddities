@@ -1,5 +1,6 @@
 package com.bawnorton.tcgadditions.mixin.pnc;
 
+import com.bawnorton.tcgadditions.TCGAdditions;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import me.desht.pneumaticcraft.common.item.PneumaticArmorItem;
@@ -33,6 +34,7 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
 
         JetBootsStateTracker.JetBootsState jbState = JetBootsStateTracker.getClientTracker().getJetBootsState(pEntityLiving);
         if (!jbState.isActive() || jbState.isBuilderMode()) return;
+        if(!TCGAdditions.isBecomePlane()) return;
 
         super.setupRotations(pEntityLiving, pPoseStack, pAgeInTicks, pRotationYaw, pPartialTicks);
         float pitch = -90 - pEntityLiving.getXRot();

@@ -38,6 +38,7 @@ public abstract class EntityMixin {
             if (!PneumaticArmorItem.isPneumaticArmorPiece(player, EquipmentSlot.FEET) || player.onGround()) return;
 
             JetBootsStateTracker.JetBootsState jbState = JetBootsStateTracker.getClientTracker().getJetBootsState(player);
+            if(!TCGAdditions.isBecomePlane()) return;
             if (!jbState.isActive() || jbState.isBuilderMode()) {
                 if(Math.abs(this.getXRot()) > 90) {
                     this.setXRot(Mth.clamp(this.getXRot(), -90, 90));
@@ -52,20 +53,21 @@ public abstract class EntityMixin {
             ClientEventHandlerAccessor.setCurrentScreenRoll(currentScreenRoll);
 
             float rollRad = (float) Math.toRadians(currentScreenRoll);
+            float bankStrength = Mth.abs(Mth.sin((float) Math.toRadians(currentScreenRoll)));
             float f = (float) pXRot * 0.15F;
 
             float deltaXRot = f * Mth.cos(rollRad);
-            float deltaYRot = f * Mth.sin(rollRad);
+            float deltaYRot = -(f * Mth.sin(rollRad)) * bankStrength;
 
             this.setXRot(this.getXRot() + deltaXRot);
             this.setXRot(Mth.wrapDegrees(this.getXRot()));
             this.xRotO += deltaXRot;
             this.xRotO = Mth.wrapDegrees(this.xRotO);
 
-            this.setYRot(this.getYRot() + deltaYRot);
-            this.setYRot(Mth.wrapDegrees(this.getYRot()));
+            this.setYRot(Mth.wrapDegrees(this.getYRot() + deltaYRot));
 
-            this.setYRot(this.getYRot() + Mth.clamp(currentScreenRoll, -45, 45) / 120);
+            float clampedRoll = Mth.clamp(currentScreenRoll, -60, 60);
+            this.setYRot(this.getYRot() + (clampedRoll / 120F) * bankStrength);
 
             if (this.vehicle != null) {
                 this.vehicle.onPassengerTurned(player);
