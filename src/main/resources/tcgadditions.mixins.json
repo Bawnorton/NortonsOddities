@@ -8,7 +8,9 @@
     "collectorsalbum.Album$MutableMixin",
     "collectorsalbum.AlbumBonusManagerMixin",
     "collectorsalbum.AlbumCategoryMenuMixin",
-    "collectorsalbum.NetworkManagerMixin"
+    "collectorsalbum.NetworkManagerMixin",
+    "pnc.VacuumTrapBlock$ItemBlockVacuumTrapMixin",
+    "pnc.VacuumTrapBlockEntityMixin"
   ],
   "client": [
     "collectorsalbum.AlbumCategoryScreenMixin",

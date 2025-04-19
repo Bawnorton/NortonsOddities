@@ -3,11 +3,9 @@ package com.bawnorton.tcgadditions;
 import com.bawnorton.tcgadditions.config.Config;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +28,6 @@ public class TCGAdditions {
             CARD_SLOT_CLASS = null;
             TCGAdditions.LOGGER.error("Failed to find AlbumCategoryMenu$CardSlot class", e);
         }
-
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.SPEC, "tcgadditions.toml");
     }
