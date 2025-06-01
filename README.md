@@ -1,1 +1,4 @@
 # Integration Fixes
+
+## Features
+- Adds recipe fill support for Eidolon's Worktable via EMI/JEI.
