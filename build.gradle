@@ -180,14 +180,11 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
-    maven {
-        url "https://cursemaven.com"
-    }
-
-    maven {
-        url "https://maven.saps.dev/minecraft"
-    }
+    maven { url "https://cursemaven.com" }
+    maven { url "https://maven.saps.dev/minecraft" }
     maven { url "https://maven.architectury.dev/" }
+    maven { url "https://maven.blamejared.com/" }
+    maven { url "https://maven.terraformersmc.com/" }
 }
 
 mixin {
@@ -199,6 +196,9 @@ mixin {
     // Enables exporting mixin-changed classes to .mixin.out in the run folder
     debug.export = true
 }
+
+var emi_version = "1.1.22+1.20.1"
+var jei_version = "15.20.0.112"
 
 dependencies {
     // Specify the version of Minecraft to use.
@@ -216,6 +216,16 @@ dependencies {
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.0-beta.5")) {
         jarJar.ranged(it, "[0.5.0-beta.5,)")
     }
+
+    implementation fg.deobf("curse.maven:eidolon-repraised-870250:5877358")
+    runtimeOnly fg.deobf("curse.maven:curios-309927:6418456")
+
+    compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api")
+    implementation fg.deobf("dev.emi:emi-forge:${emi_version}")
+
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
+    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
