@@ -7,9 +7,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(WorktableContainer.class)
 public interface WorktableContainerAccessor {
-    @Accessor("core")
+    @Accessor(value = "core", remap = false)
     CraftingContainer integrationfixes$getCore();
 
-    @Accessor("extras")
+    @Accessor(value = "extras", remap = false)
     CraftingContainer integrationfixes$getExtras();
 }

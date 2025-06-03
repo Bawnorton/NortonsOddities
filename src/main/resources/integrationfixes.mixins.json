@@ -9,6 +9,8 @@
     "accessor.WorktableContainerAccessor"
   ],
   "client": [
+    "MerchantScreenMixin",
+    "MerchantScreenMixin$TradeOfferButtonMixin"
   ],
   "minVersion": "0.8.5",
   "injectors": {
