@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "com.bawnorton.sporeadditions.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "sporeadditions.refmap.json",
+  "mixins": [
+    "CommandsMixin",
+    "JeiSporePluginMixin",
+    "ServerLevelMixin",
+    "SurgeryCraftingCategoryMixin"
+  ],
+  "minVersion": "0.8.5",
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
