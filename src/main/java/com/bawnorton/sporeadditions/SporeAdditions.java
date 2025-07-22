@@ -5,14 +5,11 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
@@ -44,11 +41,15 @@ public class SporeAdditions {
         return 1;
     }
 
-    private static void updateFrozenStatus(CommandContext<CommandSourceStack> context, boolean frozen, String message, ChatFormatting red) {
+    private static void updateFrozenStatus(CommandContext<CommandSourceStack> context, boolean frozen, String message, ChatFormatting colour) {
         ServerLevel world = context.getSource().getLevel();
         FreezeData freezeData = world.getDataStorage().computeIfAbsent(FreezeData::load, FreezeData::new, FreezeData.ID);
+        if (freezeData.isFrozen() == frozen) {
+            context.getSource().sendSystemMessage(Component.literal("Spore is already " + (frozen ? "frozen" : "unfrozen")).withStyle(ChatFormatting.GRAY));
+            return;
+        }
         freezeData.setFrozen(frozen);
-        context.getSource().sendSystemMessage(Component.literal(message).withStyle(red));
+        context.getSource().sendSystemMessage(Component.literal(message).withStyle(colour));
     }
 
     public static boolean isSporeEntity(Entity entity) {
@@ -57,5 +58,14 @@ public class SporeAdditions {
                                 .stream()
                                 .map(RegistryObject::get)
                                 .anyMatch(entry -> entry.equals(type));
+    }
+
+    public static int isSporeFrozen(CommandContext<CommandSourceStack> context) {
+        ServerLevel world = context.getSource().getLevel();
+        boolean isFrozen = isSporeFrozen(world);
+        String message = isFrozen ? "Spore is currently frozen" : "Spore is not frozen";
+        ChatFormatting color = isFrozen ? ChatFormatting.AQUA : ChatFormatting.RED;
+        context.getSource().sendSystemMessage(Component.literal(message).withStyle(color));
+        return 1;
     }
 }

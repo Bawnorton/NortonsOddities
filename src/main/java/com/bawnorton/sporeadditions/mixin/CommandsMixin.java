@@ -26,6 +26,9 @@ public abstract class CommandsMixin {
                          .then(Commands.literal("unfreeze")
                                        .executes(SporeAdditions::unfreezeSpore)
                          )
+                        .then(Commands.literal("is_frozen")
+                                       .executes(SporeAdditions::isSporeFrozen)
+                         )
         );
         return instance;
     }
