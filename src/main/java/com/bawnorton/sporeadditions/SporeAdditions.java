@@ -1,5 +1,6 @@
 package com.bawnorton.sporeadditions;
 
+import com.Harbinger.Spore.Core.Sblocks;
 import com.Harbinger.Spore.Core.Sentities;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.logging.LogUtils;
@@ -10,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
@@ -58,6 +60,13 @@ public class SporeAdditions {
                                 .stream()
                                 .map(RegistryObject::get)
                                 .anyMatch(entry -> entry.equals(type));
+    }
+
+    public static boolean isSporeBlock(Block block) {
+        return Sblocks.BLOCKS.getEntries()
+                             .stream()
+                             .map(RegistryObject::get)
+                             .anyMatch(entry -> entry.equals(block));
     }
 
     public static int isSporeFrozen(CommandContext<CommandSourceStack> context) {

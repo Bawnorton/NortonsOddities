@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.entity.EntityTickList;
 import net.minecraft.world.level.storage.WritableLevelData;
@@ -17,8 +18,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -65,5 +64,19 @@ public abstract class ServerLevelMixin extends Level {
         if (SporeAdditions.isSporeFrozen((ServerLevel) (Object) this) && SporeAdditions.isSporeEntity(entity)) {
             cir.setReturnValue(false);
         }
+    }
+
+    @WrapOperation(
+            method = "tickChunk",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/level/block/state/BlockState;isRandomlyTicking()Z"
+            )
+    )
+    private boolean dontTickSporeBlocksIfFrozen(BlockState instance, Operation<Boolean> original) {
+        boolean tick = original.call(instance);
+        if (!tick) return false;
+
+        return !(SporeAdditions.isSporeFrozen((ServerLevel) (Object) this) && SporeAdditions.isSporeBlock(instance.getBlock()));
     }
 }
