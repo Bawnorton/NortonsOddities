@@ -1,6 +1,6 @@
-package com.bawnorton.integrationfixes.mixin;
+package com.bawnorton.eidolonworkbenchjeicompat.mixin;
 
-import com.bawnorton.integrationfixes.compat.eidolon.WorktableRecipeTransferHandler;
+import com.bawnorton.eidolonworkbenchjeicompat.WorktableRecipeTransferHandler;
 import elucent.eidolon.gui.jei.JEIRegistry;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.registration.IRecipeTransferRegistration;

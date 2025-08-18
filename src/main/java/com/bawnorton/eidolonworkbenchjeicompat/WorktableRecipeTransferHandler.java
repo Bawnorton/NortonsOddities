@@ -1,6 +1,6 @@
-package com.bawnorton.integrationfixes.compat.eidolon;
+package com.bawnorton.eidolonworkbenchjeicompat;
 
-import com.bawnorton.integrationfixes.mixin.accessor.WorktableContainerAccessor;
+import com.bawnorton.eidolonworkbenchjeicompat.mixin.accessor.WorktableContainerAccessor;
 import elucent.eidolon.gui.WorktableContainer;
 import elucent.eidolon.gui.jei.JEIRegistry;
 import elucent.eidolon.recipe.WorktableRecipe;
@@ -40,8 +40,8 @@ public class WorktableRecipeTransferHandler implements IRecipeTransferInfo<Workt
     @Override
     public @NotNull List<Slot> getRecipeSlots(@NotNull WorktableContainer container, @NotNull WorktableRecipe recipe) {
         WorktableContainerAccessor accessor = (WorktableContainerAccessor) container;
-        CraftingContainer core = accessor.integrationfixes$getCore();
-        CraftingContainer extras = accessor.integrationfixes$getExtras();
+        CraftingContainer core = accessor.eidolonworkbenchjeicompat$getCore();
+        CraftingContainer extras = accessor.eidolonworkbenchjeicompat$getExtras();
         List<Slot> coreSlots = container.slots.stream()
                 .filter(slot -> slot.container == core)
                 .collect(ArrayList::new, List::add, List::addAll);
