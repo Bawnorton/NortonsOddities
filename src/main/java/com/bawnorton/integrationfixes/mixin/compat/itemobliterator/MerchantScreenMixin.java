@@ -1,4 +1,4 @@
-package com.bawnorton.integrationfixes.mixin;
+package com.bawnorton.integrationfixes.mixin.compat.itemobliterator;
 
 import com.bawnorton.integrationfixes.compat.itemobliterator.ItemObliteratorCompat;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
