@@ -6,6 +6,7 @@ plugins {
   id("net.neoforged.moddev.legacyforge")
   id("integrationfixes.common")
   id("me.modmuss50.mod-publish-plugin")
+  id("dev.isxander.secrets") version "0.1.0"
 }
 
 repositories {
@@ -181,10 +182,9 @@ extensions.configure<PublishingExtension> {
 }
 
 publishMods {
-  val mrToken = providers.gradleProperty("MODRINTH_TOKEN")
-  val cfToken = providers.gradleProperty("CURSEFORGE_TOKEN")
+  val cfTokenProvider = onePassword["op://Private/Curseforge API Key/credential"]
 
-  type = BETA
+  type = STABLE
   file = tasks.named<Jar>("reobfJar").map { it.archiveFile.get() }
   additionalFiles.from(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").map { it.archiveFile.get() })
 
@@ -198,7 +198,7 @@ publishMods {
 
   curseforge {
     projectId = property("publishing.curseforge") as String
-    accessToken = cfToken
+    accessToken = cfTokenProvider.get()
     minecraftVersions.addAll(compatibleVersions)
   }
 }
